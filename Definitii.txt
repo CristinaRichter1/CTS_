@@ -1,0 +1,485 @@
+-------------------------------------------------------CLASELE-------------------------------------------------------
+
+COMPONENTE CLASE
+Fiecare clasa are un nume "What is it?" ex: RoundCookie => type
+Fiecare clasa are atribute care sa descrie un obiect "What describes it?" (weight, color, icing) => properties, data
+Fiecare clasa are actiuni behaviors "What can it do?" (decorate(), consume() ) => operations
+
+DIFERENTA INTRE METODE SI FUNCTII
+O metoda este o metoda care poate returna o valoare insa este definita in interiorul unei clase si care pot accesa 
+doar datele care sunt in interiorul acelei clase.
+
+1. Clasele sunt un template pentru obiecte
+2. Pe baza unei clase pot fi create mai multe obiecte care au aceleasi caracteristici
+
+diagrama uml a unei clase
+--------------
+| roundCookie| => nume
+--------------
+| weight     |
+| color      | => atribute
+| icing      |
+--------------
+| decorate() | 
+| consume()  | => actiuni
+--------------
+
+obiect(instanta) => object(instance)
+crearea unui obiect = instantiere => creating object = instantiation
+
+Fiecare obiect pe care il creez este o instanta a acelei clase
+Pentru a crea obiecte am nevoie de o clasa inainte.
+
+Clase deja existente:
+- Strings
+- Dates
+- Collections
+- File I/O, etc.
+
+-------------------------------------------------------1. ABSTRACTIZAREA-------------------------------------------------------
+4 idei fundamentale in programarea orientata obiect care trebuiesc considerate cand sunt create clase APIE (a pie)
+1) ABSTRACTIZAREA (abstraction)
+2) POLIMORFISMUL (polimorphysm)
+3) MOTENIREA (inheritance)
+4) INCAPSULAREA (encapsulation)
+
+1) abstraction. Daca spun "persoana" stii la ce ma refer. Nu trebuie sa iti spun la cine ma gandeam, nu am descris persoana.
+	Intelegi ideea de persoana. Ne concentram pe caalitatile esentiale ale ceva, si nu pe un exemplu specific.
+	Folosind abstractizarea eliminam tot ceea ce este irelevant. In mintea ta o persoana are un nume, inaltime dar nu are gust sau miros.
+
+	=> identificarea nor elemente in comun pentru toate persoanele
+
+	-----------------------------------------------------2. POLIMORFISMUL--------------------------------------------------------
+2) polimorfismul (having many forms)
+
+OVERRIDE DEF: Permiti unei subclase sa schimbe implemetarea unei metode din superclasa ()
+	=> iei o metoda si be baza overriding-ului o redefinesti (brew(coffee, water) => cupOfCoffee) 
+	=> but I use 2 different classes BasicCoffeeMaker & FrenchPress
+OVERLOAD implementezi functii diferite in acceasi clasa, care au acelasi nume dar paramtrii de input diferiti.
+	=> brew(coffee, water) => cupOfCoffee
+	=> brew(tea, water) => copOfTea
+
+
+|-------------| Daca vreau sa apelez o metoda din Superclass (Parent, Base Class)
+|  Spaceship  |  
+|-------------|	Java	super.setShield()
+| setShield() | C#		base.setShield()
+|-------------| C++		Spaceship::setShield() => c++ permite mostenirea multipla
+      ^			
+	  |
+	  |
+	  |
+|-------------|
+|Cargoshuttle |
+|-------------|
+
+
+	-----------------------------------------------------3. MOSTENIREA--------------------------------------------------------
+3) mostenirea. Descrie o relatie de tip "Is A" => A starfighter is a type of spaceship.
+Cand trebuie sa creez o noua clasa nu este intotdeauna nevoie sa o scrii de la 0. Daca programul meu are o clasa existenta
+care este similara cu ce am nevoie, o pot folosi ca baza pentru clasa noua folosindu-ma de inheritance (mostenire).
+Mostenirea permite clasei noi sa mosteneasca atributele si metodele claselor deja existente folosindu-ne de aceeasi implementare
+
+
+			|-------------------|
+			|     ClassA        |
+			|-------------------|
+			| Attribute1        |
+			| Attribute2        |               Superclass
+			|-------------------|               (Parent class)
+			| method1()         |
+			| method2()         |
+			|-------------------|
+			         ^ ^      
+			        /	\
+                   /	 \   "ClassC inherits from ClassA" => ClassC is a ClassA
+                  /       \
+                 /         \
+|-------------------|  |-------------------|
+|     ClassB        |  |     ClassC        |
+|-------------------|  |-------------------|
+| (tot din ClassA)  |  | (tot din ClassA)  |  Subclass
+| Attribute3        |  |                   |  (Child class)
+|-------------------|  |-------------------|
+| method2()         |  | Method3()         |
+|-------------------|  |-------------------|
+in classsB method2 este suprascrisa (modificata/ overridden)
+modificata fata de metoda2 din Superclass
+			           
+
+
+Sa spunem de exemplu ca vreau sa modific personajele prezente intr-o cofetatie.
+1. as putea incepe prin a defini o clasa pentru clienti
+
+|-------------------|  |-------------------|     
+|     Clienti       |  |     Angajati      |
+|-------------------|  |-------------------|
+| name              |  | name              |
+| phone             |  | phone             |
+| address           |  | address           |
+| customerNumber    |  | employeeNumber    |
+---------------------  |-------------------|
+| updateContact()   |  | updateContact()   |
+| purchase()        |  | promote()         |
+|-------------------|  | retire()          |
+			           |-------------------|
+
+O solutie ar fi sa creez o clasa Person in care sa definesc atributele in comun si apoi sa bazez clasele clienti si angajati pe ele.
+Clientul mosteneste din Persoana
+Angajatul mosteneste din Persoana
+Persoana este Superclass (Base Class, Parent Class)
+Clienti si angajat sunt Subclass (CDerived Class, Child Class)
+
+			|-------------------|
+			|     Persoana      |
+			|-------------------|
+			| name              |
+			| phone             |
+			| address           |
+			| email(atribut nou |
+			|-------------------|
+			| updateContact()   |
+			|-------------------|
+			         ^ ^      ^
+			        /	\      \  
+                   /	 \              \
+                  /       \                      \
+                 /         \                           \
+|-------------------|  |-------------------|   |------------------|   
+|     Client        |  |     Angajat       |   |     Curier       |
+|-------------------|  |-------------------|   |------------------|
+| (tot din Persoana)|  | (tot din Persoana)|   |(tot din Persoana)|
+| customerNumber    |  | employeeNumber    |   |deliverPackage()  |
+| customerNumber    |  | employeeNumber    |   |------------------|
+---------------------  |-------------------|
+| purchase()        |  | promote()         |
+|-------------------|  | retire()          |
+			           |-------------------|
+
+Apoi pot adauga o clasa ulterioara Curier.
+Daca modific Superclasa va avea efect si asupra subclaselor (adaug email)
+
+|-------------|
+|  Spaceship  |  Java	public class CargoShuttle extends Spaceship { ... }
+|-------------|   C#	public class CargoShuttle : Spaceship { ... }
+      ^			 C++	class CargoShuttle : public Spaceship { ... }
+	  |
+	  |
+	  |
+|-------------|
+|Cargoshuttle |
+|-------------|
+
+
+
+	-----------------------------------------------------4. INCAPSULAREA-------------------------------------------------------
+4) incapsularea. Prin incapsulare se retin si ascund elementele unui obiect (containing the elements of an object)
+	- pentru a le tine impreuna si
+	- pentru a le proteja
+
+	Punem impreuna atributele obiectului sau date impreuna cu metodele care fac modificari asupra acelor date in aceeasi clasa.
+	Motive:
+	- Pentru a restrictiona accesul la unele din componente.
+
+
+	Poti avea acces la obiectele din clasa mea dar va trebui sa folosesti metoda mea pentru a avea acces la ele.
+
+---------------------------------------------------------------------------------------------------------------------------------
+UML Unified modeling language
+
+(grafical notation for drawing diagrams to visualise object oriented systems)
+
+O clasa abstracta poate fi identificata prin faptul ca numele clasei este scris italic (inclinat).
+
+
+			|-------------------|
+			|     Persoana      | -->>-> Name
+			|-------------------|
+			| name              |
+			| phone             | -->>-> Attributes/Fields
+			| address           |
+			| email(atribut nou |
+			|-------------------|
+			| updateContact()   | -->>-> Behaviors/Methods
+			|-------------------|
+
+			CLASS DIAGRAM
+
+			La attributes => ce e dupa = este valoarea default
+			-------------
+			La behaviors => ce e dupa : este Return Type
+
+			Controlul vizibilitatii:
+			+ (la attributes & behaviors) => membrul este public, vizibil in afara clasei
+			- (la attributes & behaviors) => membrul este privat, nu este accesibil direct de alte obiecte
+
+			|--------------------------------------|
+			|     Spaceship                        | -->>-> Name
+			|--------------------------------------|
+			| - callSign: String = "Excelsior      |
+			| - shieldActive: Boolean              | -->>-> Attributes/Fields
+			| - shieldStrength: Integer            |
+			| - position: Coordinate               |
+			|--------------------------------------|
+			| + getShieldStrength(): Integer       | => ce e dupa : e return type
+			| + reduceShields(Integer)             | => ia un integer ca input si nu returneaza nimic
+			| + getPosition(): Coordinae           | -->>-> Behaviors/Methods
+			| + move(Direction)                    |
+			| - setPosition(Coordinate)            |
+			|--------------------------------------|
+															
+			|--------------------------------------|			
+			|     Spaceship                        | -->>-> public class Spaceship {
+			|--------------------------------------|			
+			| - callSign: String                   | -->>-> public String callSign;
+			| - shieldStrength: Integer            | -->>-> private int shieldStrength;
+			| + toughness                          | -->>-> public static float toughness;
+			| -----------                          | -->>-> in UML variabilele statice sunt subliniate
+			|--------------------------------------|
+			| + Spaceship()                        | -->>-> Constructor fara parametrii.
+			| + Spaceship(String)                  | -->>-> Constructor cu parametrii.
+			|                                      |
+			| + fireMissile(): String              | -->>-> public String fireMissile() { return "Pew!"; }
+			| + reduceShields(Integer)             | -->>-> public reduceShields(int amount){ shieldStrength -= amount; }
+			| + increaseDifficulty(Float)          | -->>-> public static increaseDifficulty(float t){ toughness += t; }
+			|--------------------------------------|}
+																
+																
+																
+																
+															public class Spaceship 
+															{
+																// instance variables
+																public String callSign;
+																private int shieldStrength;
+
+																//class variables
+																//variabila statica ce va putea fi folosita de toate obiectele ce vor fi create pe baza clasei Spaceship
+																public static float toughness;
+
+																//static methods (Java and C#) 
+																//=> pot accesa doar variabile statice, nu se pot folosi de instance variables
+																public static increaseDifficulty(float t){
+																	toughness += t;
+																}
+
+																public String fireMissile() { 
+																	return "Pew!"; 
+																}
+																																
+																public reduceShields(int amount){
+																	shieldStrength -= amount;
+																}
+
+																//constructor fara parametrii //in Java constructorul este apelat folosind numele clasei
+																public Spaceship(){
+																	name = "The nameless ship";
+																	shieldStrength = 100;
+																}
+
+																//constructor cu parametrii
+																//overloading
+																public Spaceship(String name){
+																	callSign = name;
+																	shieldStrength = 200;
+																}
+															}
+
+Cand am scris clasa pentru o spaceShip, creem blueprint-ul () construirii unei naveSpatiale
+Blue print-ul in sine nu poate fi folosit, dar putem instantia (crea/initializa) una sau mai multe obiecte de tip spaceship.
+Ca sa instantiem in 
+- c++/c#/java se foloseste cuvantul cheie new => se aloca spatiu
+		=> Java/C# => Spaceship myShip = new Spaceship();
+		=> C++ => Spaceship *myShip = new Spaceship();
+- c se foloseste cuvantul cheie malloc
+
+Contructorul este o metoda speciala ce este apelata sa creeze un obiect
+
+//constructor
+//in Java constructorul este apelat folosind numele clasei
+		public Spaceship(){
+			name = "The nameless ship";
+			shieldStrenght = 100;
+		}
+
+Astfel, cand folosesc cuvantul cheie new va fi apelata aceasta metoda speciala numita constructor (care nu returneaza nimic)
+iar obiectul va fi instantiat cu valorile definite de noi nu de cele standard
+valori predefinite: NULL pentru string si 0 pentru int.
+
+Prin Overloading pot exista mai multi constructori: fara parametrii, cu parametrii, cu toti parametrii
+
+																//constructor cu parametrii
+																//overloading
+																public Spaceship(String name){
+																	callSign = name;
+																	shieldStrength = 200;
+																}
+
+INSTANTIERE
+Cand instantiem constructorii
+
+Spaceship myShip = new SpaceShip() //in C++  => cheama constructorul fara parametrii
+Spaceship myShip = (Spaceship) malloc (sizeof(Spaceship)); //in c => cheama constructorul fara parametrii
+
+--------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------DESTRUCTORII----------------------------------------------------------------------
+
+Folosit pentru eliberarea memoriei folosite de tot ce a fost alocat dinamic
+In Java exista Garbage Collectors
+In C => free()
+In C++ => delete()
+
+--------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------Atribute si metode statice--------------------------------------------------------
+
+Variabila statica este o variabila ce poate fi folosita de toate obiectele unei clase.
+Exemplu: daca utilizatorul schimba nivelul jocului din usor in greu, poate fi introdusa in clasa o variabila statica ca sa fie 
+folosita de toate obiectele tip spaceship. 
+
+=> variabila toughness initializata cu 0,85 pentru toate obiectele
+
+--------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------Clase abstracte--------------------------------------------------------
+
+Spaceship este o clasa abstracta care nu poate fi instantiata, exista pentru simplul motiv sa fie mostenita de alte clase.
+Ea contine cel putin o metoda abstracta
+Subclasele: WarpShuttle, CargoShuttle sunt derivate din Superclass spaceship
+
+Daca in superclass Spaceship avem metoda move(), dar daca fiecare tip de spaceship se misca in mod diferit fata de celelate
+trebuie sa facem superclasa spaceship abstracta
+                             |------------|
+|------------| <-------------|StarFighter | 
+| Spaceship  |               |------------|
+|------------|               | move()     |
+| setShield()|               |------------|
+| move()     |
+|------------| <------------ |------------|
+							 |CargoShuttle|
+							 |------------|
+							 | move()     |
+							 |------------|
+
+abstract class Spaceship { ... }
+
+in java exista si clasele final class WarpCruiser { ... } se mai numesc clase "concrete"
+O clasa final TREBUIE sa fie instantiata si nu poate fi extinsa sau sa fie mostenita.
+Cuvintele cheie final si abstract pot fi omise in Java.
+
+In Java se vede ca o clasa este abstracta daca nu este instantiata, daca nu creezi un obiect din ea, chiar daca nu are cuvantul cheie abstract.
+
+
+--------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------Interfaces--------------------------------------------------------
+
+Interfetele sunt o alta forma comuna de abstractizare.
+Interfetele sunt o structura care declara un set de metode pe care clasele sa le implementeze.
+Interfata in sine nu contine nici un tip de functionalitate. Nu are cod implementat sau behavior (actiune).
+Este doar o colectie de "signatures"
+
+interface Moveable {
+	//method signatures
+
+	void move (int x, int y); //metoda din interfata nu are corp "body"
+}
+
+class Asteroid implements Moveable {
+	public void move (int x, int y) {
+		//provide implementation code...
+	}
+	//aditionla class functionality
+}
+
+---------------------------------------------------------------------------------------------------------------------------------------
+Clasele abstracte sunt diferite de interfete prin urmatoarele:
+- Interfetele reprezinta o capabilitate ("capability")
+- Clasele abstracte reprezinta un tip ("type")
+
+				|-----------------|		|-----------------|
+				|  <<interface>>  |		|  <<interface>>  |
+				|	Movable       |		|	Drawable	  |
+				|-----------------|		|-----------------|
+				| move()          |		| draw()		  |
+				|-----------------|		|-----------------|
+				    ^    ^			       ^
+				   /      \			      /
+ -> in UML linie intrerupta (clasele mostenesc o interfata)
+                 /           \			/
+									   
+               /               \      /
+|----------------|			|------------------|	Un asteroid nu este o nava spatialav(spaceship)
+|	Spaceship	 |			|  Asteroid        |	dar au in comun faptul ca se pot misca.
+|----------------|			|------------------|	Astfel ca pot implementa in comun o interfata
+| setShield()	 |			| move()           |
+| move()         |          | detectCollision()| 
+| draw()		 |			| draw()		   |
+|----------------|          |------------------|
+		^
+		|
+		| -> in UML linie continua (clasele mostenesc o alta clasa (superclass, parent, base)) 
+		|
+|----------------|
+|  CargoShuttle  |	In Java o clasa poate implementa mai multe interfete.
+|----------------|
+| move()         |
+| dropCargo()    |
+|----------------|
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------Inheritance (IS A) vs Aggregation (HAS A)-------------------------------------
+
+Inheritance este doar 1 tip de relatie care poate exista intre obiecte.
+Conceptul de aggregation este un alt tip de relatie intre obiecte, in care un obiect este construit din alte obiecte.
+
+Exemplu: nave spatiale: 
+Ne putem gandi la o flota ca la un obiect care contine mai multe nave spatiale individuale.
+
+Agregarea se refera la o relatie de tip "HAS A".
+
+INCORECT: A fleet  is a		 spaceship
+CORECT	: A fleet has a/many spaceship(s)
+
+UML (empty diamond) => aggregation
+
+|-------------|	1		0..*|-------------|
+|  Fleet      |<>-----------| Spaceship	  |
+|-------------|				|-------------|
+
+Daca este stearsa clasa Fleet navele spatiale individuale continua sa existe. E ca si cum s-ar desparti o trupa. Chiar daca trupa nu mai exista
+persoanele (componentele) care formau trupa continua sa existe.
+
+
+--------COMPOSITION-----------
+Composition implies ownership => A spaceship has an engine => A spaceship owns an engine.
+An engine has no meaning without a spaceship.
+
+UML (filled in diamond) => composition
+
+|-------------|	1		 1..*|------------|
+|  Spaceship  |<x>-----------| Engine	  |
+|-------------|				 |------------|
+
+
+Inheritance ---------------->	sageata cu linie continua
+Interfaces  - - - - - - - - >	sageata cu linie intrerupta
+Aggregation ----------------<>	linie cu diamant gol
+Composition ----------------<x> linie cu diamant plin
+
+-----------------------------\\
+
+SOLID principles
+
+Single resposibility principle => a class should have only a single responsibility (!GOD objects)
+Open/closed principle
+Liskov substitution principle
+Interface segregation principle
+Dependency inversion principle
+
+DRY (don't repeat yourself) do not copy paste code. SOLUTION > create a method and call it whenever you need it
+
+YAGNI (You Ain't Gonna Need It) do not try to make your code too extensible
+
+-----------------------------------
+
+DESIGN PATTERNS
